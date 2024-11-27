@@ -1,0 +1,7 @@
+ ☐ Modificar en pantalla de validación de C.I. (Decir que debe contener números y lo mínimo que puede tener)
+ ☐ Corregir el campo Estado, Municipio, Avenida
+ ☐ Corregir campo Teléfono que acepte si es +58 o el número de otro país.
+ ☐ Corregir los mensajes en pantalla de dirección personal
+ ☐ Casa o apartamento XX o es el número o hacer un `<select>` de tipo de vivienda
+ ☐ Modificar el reporte pantalla si da error al registrar.
+ ☐ Los mensajes de validación deben de estar mejor formulados.
