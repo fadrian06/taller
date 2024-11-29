@@ -59,4 +59,3 @@ if ($usuario === null) {
     echo "Error al obtener los datos del usuario.";
     exit();
 }
-?>

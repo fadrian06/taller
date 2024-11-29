@@ -1,6 +1,5 @@
-<?php
-require_once "../../config/ManejoUsuario.php"
-  ?>
+<?php require_once "../../config/ManejoUsuario.php" ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -97,7 +96,7 @@ require_once "../../config/ManejoUsuario.php"
           $conn = $database->getConnection();
 
           // Consulta para obtener los datos de los clientes
-          $sql = "SELECT 
+          $sql = "SELECT
                                 c.cedula AS 'Cédula',
                                 c.primerNombre AS 'Primer Nombre',
                                 c.segundoNombre AS 'Segundo Nombre',
@@ -147,7 +146,7 @@ require_once "../../config/ManejoUsuario.php"
   </div>
 
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#clientesTable').DataTable({
         responsive: true,
         language: {
@@ -162,9 +161,9 @@ require_once "../../config/ManejoUsuario.php"
       window.location.href = 'editar_cliente.php?cedula=' + cedula;
     }
 
-// Función para eliminar cliente
-function deleteClient(cedula) {
-    Swal.fire({
+    // Función para eliminar cliente
+    function deleteClient(cedula) {
+      Swal.fire({
         title: '¿Estás seguro?',
         text: "¡Esta acción eliminará todos los datos asociados con este cliente!",
         icon: 'warning',
@@ -173,288 +172,290 @@ function deleteClient(cedula) {
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
-    }).then((result) => {
+      }).then((result) => {
         if (result.isConfirmed) {
-            $.ajax({
-                url: '../../CRUD/Clientes/eliminar_cliente.php',
-                method: 'POST',
-                data: { cedula: cedula },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Eliminado!',
-                            text: '¡Cliente eliminado exitosamente!',
-                            showConfirmButton: true
-                        }).then(() => {
-                            // Recargar la tabla sin recargar la página
-                            $('#clientesTable').DataTable().ajax.reload();
-                            // Si prefieres recargar la página completa, usa:
-                            location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: response.mensaje || 'Hubo un error al eliminar el cliente'
-                        });
-                    }
-                },
-                error: function() {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Hubo un problema de conexión al intentar eliminar el cliente'
-                    });
-                }
-            });
+          $.ajax({
+            url: '../../CRUD/Clientes/eliminar_cliente.php',
+            method: 'POST',
+            data: {
+              cedula: cedula
+            },
+            dataType: 'json',
+            success: function(response) {
+              if (response.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: '¡Eliminado!',
+                  text: '¡Cliente eliminado exitosamente!',
+                  showConfirmButton: true
+                }).then(() => {
+                  // Recargar la tabla sin recargar la página
+                  $('#clientesTable').DataTable().ajax.reload();
+                  // Si prefieres recargar la página completa, usa:
+                  location.reload();
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: response.mensaje || 'Hubo un error al eliminar el cliente'
+                });
+              }
+            },
+            error: function() {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema de conexión al intentar eliminar el cliente'
+              });
+            }
+          });
         }
-    });
-}
+      });
+    }
   </script>
   <!-- Modal para editar cliente -->
-<div class="modal fade" id="editClientModal" tabindex="-1" aria-labelledby="editClientModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editClientModalLabel">Editar Cliente</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="editClientForm" class="row g-3 needs-validation" novalidate>
-          <!-- Sección de Datos Personales -->
-          <h6 class="mb-3 fw-bold fs-4">Datos Personales</h6>
+  <div class="modal fade" id="editClientModal" tabindex="-1" aria-labelledby="editClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editClientModalLabel">Editar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editClientForm" class="row g-3 needs-validation" novalidate>
+            <!-- Sección de Datos Personales -->
+            <h6 class="mb-3 fw-bold fs-4">Datos Personales</h6>
 
-          <!-- Primer Nombre -->
-          <div class="col-md-6">
-            <label for="editFirstName" class="form-label">Primer Nombre</label>
-            <input type="text" name="firstName" id="editFirstName" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
-            <div class="invalid-feedback">Por favor, ingrese un nombre válido con la primera letra en mayúscula.</div>
-          </div>
+            <!-- Primer Nombre -->
+            <div class="col-md-6">
+              <label for="editFirstName" class="form-label">Primer Nombre</label>
+              <input type="text" name="firstName" id="editFirstName" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
+              <div class="invalid-feedback">Por favor, ingrese un nombre válido con la primera letra en mayúscula.</div>
+            </div>
 
-          <!-- Segundo Nombre -->
-          <div class="col-md-6">
-            <label for="editSecondName" class="form-label">Segundo Nombre</label>
-            <input type="text" name="secondName" id="editSecondName" class="form-control"
-              pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
-            <div class="invalid-feedback">Por favor, ingrese un nombre válido con la primera letra en mayúscula.</div>
-          </div>
+            <!-- Segundo Nombre -->
+            <div class="col-md-6">
+              <label for="editSecondName" class="form-label">Segundo Nombre</label>
+              <input type="text" name="secondName" id="editSecondName" class="form-control"
+                pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
+              <div class="invalid-feedback">Por favor, ingrese un nombre válido con la primera letra en mayúscula.</div>
+            </div>
 
-          <!-- Primer Apellido -->
-          <div class="col-md-6">
-            <label for="editFirstSurname" class="form-label">Primer Apellido</label>
-            <input type="text" name="firstSurname" id="editFirstSurname" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
-            <div class="invalid-feedback">Por favor, ingrese un apellido válido con la primera letra en mayúscula.</div>
-          </div>
+            <!-- Primer Apellido -->
+            <div class="col-md-6">
+              <label for="editFirstSurname" class="form-label">Primer Apellido</label>
+              <input type="text" name="firstSurname" id="editFirstSurname" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
+              <div class="invalid-feedback">Por favor, ingrese un apellido válido con la primera letra en mayúscula.</div>
+            </div>
 
-          <!-- Segundo Apellido -->
-          <div class="col-md-6">
-            <label for="editSecondSurname" class="form-label">Segundo Apellido</label>
-            <input type="text" name="secondSurname" id="editSecondSurname" class="form-control"
-              pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
-            <div class="invalid-feedback">Por favor, ingrese un apellido válido con la primera letra en mayúscula.</div>
-          </div>
+            <!-- Segundo Apellido -->
+            <div class="col-md-6">
+              <label for="editSecondSurname" class="form-label">Segundo Apellido</label>
+              <input type="text" name="secondSurname" id="editSecondSurname" class="form-control"
+                pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$">
+              <div class="invalid-feedback">Por favor, ingrese un apellido válido con la primera letra en mayúscula.</div>
+            </div>
 
-          <!-- Cédula -->
-          <div class="col-md-6">
+            <!-- Cédula -->
+            <div class="col-md-6">
               <label for="cedula" class="form-label">Cédula de Identidad</label>
               <input type="text" name="cedula" id="editcedula" class="form-control" required pattern="^[VE]-\d{6,8}$">
               <div class="invalid-feedback">Formato válido: V-123456 o E-123456.</div>
             </div>
 
-          <!-- Teléfonos -->
-          <div class="col-md-4">
-            <label for="editPersonalPhone" class="form-label">Teléfono Personal</label>
-            <input type="text" name="personalPhone" id="editPersonalPhone" class="form-control" required
-              pattern="^\d{11}$">
-            <div class="invalid-feedback">Debe tener 11 dígitos.</div>
-          </div>
+            <!-- Teléfonos -->
+            <div class="col-md-4">
+              <label for="editPersonalPhone" class="form-label">Teléfono Personal</label>
+              <input type="text" name="personalPhone" id="editPersonalPhone" class="form-control" required
+                pattern="^\d{11}$">
+              <div class="invalid-feedback">Debe tener 11 dígitos.</div>
+            </div>
 
-          <div class="col-md-4">
-            <label for="editLandlinePhone" class="form-label">Teléfono Fijo</label>
-            <input type="text" name="landlinePhone" id="editLandlinePhone" class="form-control" pattern="^\d{11}$">
-            <div class="invalid-feedback">Debe tener 11 dígitos.</div>
-          </div>
+            <div class="col-md-4">
+              <label for="editLandlinePhone" class="form-label">Teléfono Fijo</label>
+              <input type="text" name="landlinePhone" id="editLandlinePhone" class="form-control" pattern="^\d{11}$">
+              <div class="invalid-feedback">Debe tener 11 dígitos.</div>
+            </div>
 
-          <div class="col-md-4">
-            <label for="editOptionalPhone" class="form-label">Teléfono Opcional</label>
-            <input type="text" name="optionalPhone" id="editOptionalPhone" class="form-control" pattern="^\d{11}$">
-            <div class="invalid-feedback">Debe tener 11 dígitos.</div>
-          </div>
+            <div class="col-md-4">
+              <label for="editOptionalPhone" class="form-label">Teléfono Opcional</label>
+              <input type="text" name="optionalPhone" id="editOptionalPhone" class="form-control" pattern="^\d{11}$">
+              <div class="invalid-feedback">Debe tener 11 dígitos.</div>
+            </div>
 
-          <!-- Dirección -->
-          <h6 class="mb-3 fw-bold fs-4">Dirección Personal</h6>
+            <!-- Dirección -->
+            <h6 class="mb-3 fw-bold fs-4">Dirección Personal</h6>
 
-          <div class="col-md-6">
-            <label for="editState" class="form-label">Estado</label>
-            <input type="text" name="state" id="editState" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$">
-            <div class="invalid-feedback">Ingrese un estado válido (primera letra mayúscula).</div>
-          </div>
+            <div class="col-md-6">
+              <label for="editState" class="form-label">Estado</label>
+              <input type="text" name="state" id="editState" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$">
+              <div class="invalid-feedback">Ingrese un estado válido (primera letra mayúscula).</div>
+            </div>
 
-          <div class="col-md-6">
-            <label for="editMunicipality" class="form-label">Municipio</label>
-            <input type="text" name="municipality" id="editMunicipality" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$">
-            <div class="invalid-feedback">Ingrese un municipio válido (primera letra mayúscula).</div>
-          </div>
+            <div class="col-md-6">
+              <label for="editMunicipality" class="form-label">Municipio</label>
+              <input type="text" name="municipality" id="editMunicipality" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$">
+              <div class="invalid-feedback">Ingrese un municipio válido (primera letra mayúscula).</div>
+            </div>
 
-          <div class="col-md-6">
-            <label for="editParish" class="form-label">Parroquia</label>
-            <input type="text" name="parish" id="editParish" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$">
-            <div class="invalid-feedback">Ingrese una parroquia válida (primera letra mayúscula).</div>
-          </div>
+            <div class="col-md-6">
+              <label for="editParish" class="form-label">Parroquia</label>
+              <input type="text" name="parish" id="editParish" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$">
+              <div class="invalid-feedback">Ingrese una parroquia válida (primera letra mayúscula).</div>
+            </div>
 
-          <div class="col-md-6">
-            <label for="editAvenue" class="form-label">Avenida</label>
-            <input type="text" name="avenue" id="editAvenue" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\-]{1,49}$">
-            <div class="invalid-feedback">Ingrese una avenida válida (letras, números, guiones).</div>
-          </div>
+            <div class="col-md-6">
+              <label for="editAvenue" class="form-label">Avenida</label>
+              <input type="text" name="avenue" id="editAvenue" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\-]{1,49}$">
+              <div class="invalid-feedback">Ingrese una avenida válida (letras, números, guiones).</div>
+            </div>
 
-          <div class="col-md-6">
-            <label for="editStreet" class="form-label">Calle</label>
-            <input type="text" name="street" id="editStreet" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\-]{1,49}$">
-            <div class="invalid-feedback">Ingrese una calle válida (letras, números, guiones).</div>
-          </div>
+            <div class="col-md-6">
+              <label for="editStreet" class="form-label">Calle</label>
+              <input type="text" name="street" id="editStreet" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\-]{1,49}$">
+              <div class="invalid-feedback">Ingrese una calle válida (letras, números, guiones).</div>
+            </div>
 
-          <div class="col-md-6">
-            <label for="editHouseOrApartment" class="form-label">Casa o Apartamento</label>
-            <input type="text" name="houseOrApartment" id="editHouseOrApartment" class="form-control" required
-              pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s#\-]{1,49}$">
-            <div class="invalid-feedback">Ingrese una dirección válida (letras, números, guiones, #).</div>
-          </div>
+            <div class="col-md-6">
+              <label for="editHouseOrApartment" class="form-label">Casa o Apartamento</label>
+              <input type="text" name="houseOrApartment" id="editHouseOrApartment" class="form-control" required
+                pattern="^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s#\-]{1,49}$">
+              <div class="invalid-feedback">Ingrese una dirección válida (letras, números, guiones, #).</div>
+            </div>
 
-          <!-- Botón para guardar cambios -->
-          <div class="col-12">
-            <button class="btn btn-success w-100" type="submit">Guardar Cambios</button>
-          </div>
-        </form>
+            <!-- Botón para guardar cambios -->
+            <div class="col-12">
+              <button class="btn btn-success w-100" type="submit">Guardar Cambios</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  function editClient(cedula) {
-  const modal = new bootstrap.Modal(document.getElementById('editClientModal'));
-  modal.show();
+  <script>
+    function editClient(cedula) {
+      const modal = new bootstrap.Modal(document.getElementById('editClientModal'));
+      modal.show();
 
-  // Realizar una solicitud AJAX para obtener los datos del cliente
-  fetch(`../../CRUD/Clientes/obtener_cliente.php?cedula=${cedula}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Llenar los campos del formulario con los datos obtenidos
-        document.getElementById('editFirstName').value = data.cliente.primerNombre;
-        document.getElementById('editSecondName').value = data.cliente.segundoNombre || '';
-        document.getElementById('editFirstSurname').value = data.cliente.primerApellido;
-        document.getElementById('editSecondSurname').value = data.cliente.segundoApellido || '';
-        document.getElementById('editcedula').value = `V-${data.cliente.cedula}`;
-        document.getElementById('editPersonalPhone').value = data.cliente.telefonoPersonal;
-        document.getElementById('editLandlinePhone').value = data.cliente.telefonoFijo || '';
-        document.getElementById('editOptionalPhone').value = data.cliente.telefonoOpcional || '';
-        document.getElementById('editState').value = data.cliente.estado;
-        document.getElementById('editMunicipality').value = data.cliente.municipio;
-        document.getElementById('editParish').value = data.cliente.parroquia;
-        document.getElementById('editAvenue').value = data.cliente.avenida;
-        document.getElementById('editStreet').value = data.cliente.calle;
-        document.getElementById('editHouseOrApartment').value = data.cliente.casaApartamento;
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: data.message || 'No se pudieron cargar los datos del cliente',
-        });
-      }
-    })
-    .catch(error => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Ocurrió un error al obtener los datos del cliente',
-      });
-      console.error('Error:', error);
-    });
-}
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('editClientForm');
-
-// Validación en cada input
-form.querySelectorAll('input, select').forEach(field => {
-      field.addEventListener('input', () => {
-        field.setCustomValidity('');
-        if (!field.checkValidity()) {
-          field.classList.add('is-invalid');
-        } else {
-          field.classList.remove('is-invalid');
-        }
-      });
-    });
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      if (!form.checkValidity()) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Formulario incompleto',
-          text: 'Por favor complete correctamente todos los campos.',
-        });
-        return;
-      }
-
-      try {
-        const formData = new FormData(form);
-
-        Swal.fire({
-          title: 'Procesando',
-          text: 'Por favor espere...',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
+      // Realizar una solicitud AJAX para obtener los datos del cliente
+      fetch(`../../CRUD/Clientes/obtener_cliente.php?cedula=${cedula}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Llenar los campos del formulario con los datos obtenidos
+            document.getElementById('editFirstName').value = data.cliente.primerNombre;
+            document.getElementById('editSecondName').value = data.cliente.segundoNombre || '';
+            document.getElementById('editFirstSurname').value = data.cliente.primerApellido;
+            document.getElementById('editSecondSurname').value = data.cliente.segundoApellido || '';
+            document.getElementById('editcedula').value = `V-${data.cliente.cedula}`;
+            document.getElementById('editPersonalPhone').value = data.cliente.telefonoPersonal;
+            document.getElementById('editLandlinePhone').value = data.cliente.telefonoFijo || '';
+            document.getElementById('editOptionalPhone').value = data.cliente.telefonoOpcional || '';
+            document.getElementById('editState').value = data.cliente.estado;
+            document.getElementById('editMunicipality').value = data.cliente.municipio;
+            document.getElementById('editParish').value = data.cliente.parroquia;
+            document.getElementById('editAvenue').value = data.cliente.avenida;
+            document.getElementById('editStreet').value = data.cliente.calle;
+            document.getElementById('editHouseOrApartment').value = data.cliente.casaApartamento;
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: data.message || 'No se pudieron cargar los datos del cliente',
+            });
           }
-        });
-
-        const response = await fetch('../../CRUD/Clientes/editar_cliente.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Cliente actualizado',
-            text: 'Los datos del cliente se actualizaron correctamente.',
-          }).then(() => {
-            form.reset();
-            modal.hide();
-          });
-        } else {
+        })
+        .catch(error => {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: result.mensaje || 'Error al actualizar cliente',
+            text: 'Ocurrió un error al obtener los datos del cliente',
+          });
+          console.error('Error:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('editClientForm');
+
+      // Validación en cada input
+      form.querySelectorAll('input, select').forEach(field => {
+        field.addEventListener('input', () => {
+          field.setCustomValidity('');
+          if (!field.checkValidity()) {
+            field.classList.add('is-invalid');
+          } else {
+            field.classList.remove('is-invalid');
+          }
+        });
+      });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Formulario incompleto',
+            text: 'Por favor complete correctamente todos los campos.',
+          });
+          return;
+        }
+
+        try {
+          const formData = new FormData(form);
+
+          Swal.fire({
+            title: 'Procesando',
+            text: 'Por favor espere...',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          const response = await fetch('../../CRUD/Clientes/editar_cliente.php', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Cliente actualizado',
+              text: 'Los datos del cliente se actualizaron correctamente.',
+            }).then(() => {
+              form.reset();
+              modal.hide();
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: result.mensaje || 'Error al actualizar cliente',
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un error al procesar la solicitud',
           });
         }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Ocurrió un error al procesar la solicitud',
-        });
-      }
+      });
     });
-  });
-</script>
+  </script>
 
   <!-- Modal para registrar Clientes -->
   <div class="modal fade" id="registerClientModal" tabindex="-1" aria-labelledby="registerClientModalLabel"
@@ -602,7 +603,7 @@ form.querySelectorAll('input, select').forEach(field => {
       modal.show();
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('clientForm');
 
       // Validación en cada input
@@ -618,7 +619,7 @@ form.querySelectorAll('input, select').forEach(field => {
       });
 
       // Manejo de validación al enviar el formulario
-      form.addEventListener('submit', async function (e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         if (!form.checkValidity()) {
