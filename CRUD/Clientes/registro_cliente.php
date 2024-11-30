@@ -68,9 +68,10 @@ class ClientValidator
             $this->errors[] = "Calle inválida";
         }
 
-        $houseRegex = "/^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s#\-]{1,49}$/";
-        if (!preg_match($houseRegex, $data['houseOrApartment'])) {
-            $this->errors[] = "Casa/Apartamento inválido";
+        $housingNumber = "/^[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\#\-]{1,49}$/";
+
+        if (!preg_match($housingNumber, $data['housingNumber'])) {
+            $this->errors[] = "Número de vivienda inválido";
         }
 
         return empty($this->errors);
@@ -112,7 +113,8 @@ class ClientRegistration
             $parroquiaId = $this->getOrCreateId('Parroquias', 'parroquiaId', 'nombreParroquia', $data['parish'], 'municipioId', $municipioId);
             $avenidaId = $this->getOrCreateId('Avenidas', 'avenidaId', 'nombreAvenida', $data['avenue'], 'parroquiaId', $parroquiaId);
             $calleId = $this->getOrCreateId('Calles', 'calleId', 'nombreCalle', $data['street'], 'avenidaId', $avenidaId);
-            $casaApartamentoId = $this->getOrCreateId('CasasApartamentos', 'casaApartamentoId', 'detalleCasaApartamento', $data['houseOrApartment'], 'calleId', $calleId);
+            // TODO: add housingType in `CasasApartamentos` table
+            $casaApartamentoId = $this->getOrCreateId('CasasApartamentos', 'casaApartamentoId', 'detalleCasaApartamento', $data['housingNumber'], 'calleId', $calleId);
 
             // Limpiar la cédula
             $cedula = str_replace(['V-', 'E-'], '', $data['cedula']);
@@ -154,7 +156,6 @@ class ClientRegistration
                 'success' => true,
                 'mensaje' => 'Cliente registrado exitosamente'
             ];
-
         } catch (PDOException $e) {
             $this->conn->rollBack();
             return [
@@ -215,6 +216,6 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $registration = new ClientRegistration();
     $result = $registration->register($_POST);
-    echo json_encode($result);
-    exit;
+
+    exit(json_encode($result));
 }
