@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS historial_direcciones;
 DROP TABLE IF EXISTS clientes;
 DROP TABLE IF EXISTS listados_telefonos;
 DROP TABLE IF EXISTS viviendas;
+DROP TABLE IF EXISTS tipos_vivienda;
 DROP TABLE IF EXISTS calles;
 DROP TABLE IF EXISTS avenidas;
 DROP TABLE IF EXISTS parroquias;
@@ -13,7 +14,7 @@ DROP TABLE IF EXISTS estados;
 CREATE TABLE estados (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(255) NOT NULL UNIQUE,
-  `iso_3166-2` VARCHAR(255) NOT NULL UNIQUE
+  iso VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE municipios (
@@ -52,60 +53,67 @@ CREATE TABLE calles (
   UNIQUE (id_avenida, nombre)
 );
 
+CREATE TABLE tipos_vivienda (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  tipo VARCHAR(255) NOT NULL UNIQUE
+);
+
 CREATE TABLE viviendas (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   id_calle INTEGER NOT NULL,
+  id_tipo INTEGER NOT NULL,
   numero VARCHAR(255),
 
   FOREIGN KEY (id_calle) REFERENCES calles (id),
+  FOREIGN KEY (id_tipo) REFERENCES tipos_vivienda (id),
   UNIQUE (id_calle, numero)
 );
 
 CREATE TABLE listados_telefonos (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  telefonoPersonal
+  personal
     VARCHAR(255)
     NOT NULL
     UNIQUE
     CHECK (
-      telefonoPersonal LIKE '___________'
-      OR telefonoPersonal LIKE '+%'
+      personal LIKE '___________'
+      OR personal LIKE '+%'
     ),
-  telefonoFijo
+  fijo
     VARCHAR(255)
     NOT NULL
     UNIQUE
     CHECK (
-      telefonoFijo LIKE '___________'
-      OR telefonoFijo LIKE '+%'
+      fijo LIKE '___________'
+      OR fijo LIKE '+%'
     ),
-  telefonoOpcional
+  opcional
     VARCHAR(255)
     UNIQUE
     CHECK (
-      telefonoOpcional LIKE '___________'
-      OR telefonoOpcional LIKE '+%'
+      opcional LIKE '___________'
+      OR opcional LIKE '+%'
     ),
 
   CHECK (
-    telefonoPersonal != telefonoFijo
-    AND telefonoPersonal != telefonoOpcional
-    AND telefonoFijo != telefonoOpcional
+    personal != fijo
+    AND personal != opcional
+    AND fijo != opcional
   )
 );
 
 CREATE TABLE clientes (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  cedula INTEGER NOT NULL UNIQUE CHECK (cedula > 0),
-  nacionalidad ENUM('V', 'E') NOT NULL,
-  primerNombre VARCHAR(255) NOT NULL,
-  segundoNombre VARCHAR(255),
-  primerApellido VARCHAR(255) NOT NULL,
-  segundoApellido VARCHAR(255) NOT NULL,
   id_telefonos INTEGER NOT NULL,
+  nacionalidad ENUM('V', 'E') NOT NULL,
+  cedula INTEGER NOT NULL UNIQUE CHECK (cedula > 0),
+  primer_nombre VARCHAR(255) NOT NULL,
+  segundo_nombre VARCHAR(255),
+  primer_apellido VARCHAR(255) NOT NULL,
+  segundo_apellido VARCHAR(255),
 
   FOREIGN KEY (id_telefonos) REFERENCES listados_telefonos (id),
-  UNIQUE (primerNombre, segundoNombre, primerApellido, segundoApellido)
+  UNIQUE (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido)
 );
 
 CREATE TABLE historial_direcciones (
@@ -125,12 +133,13 @@ CREATE TABLE roles (
 
 CREATE TABLE usuarios (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  id_rol INTEGER NOT NULL,
   cedula INTEGER NOT NULL UNIQUE CHECK (cedula > 0),
   nacionalidad ENUM('V', 'E') NOT NULL,
-  primerNombre VARCHAR(255) NOT NULL,
-  segundoNombre VARCHAR(255),
-  primerApellido VARCHAR(255) NOT NULL,
-  segundoApellido VARCHAR(255) NOT NULL,
+  primer_nombre VARCHAR(255) NOT NULL,
+  segundo_nombre VARCHAR(255),
+  primer_apellido VARCHAR(255) NOT NULL,
+  segundo_apellido VARCHAR(255),
   genero ENUM('Masculino', 'Femenino') NOT NULL,
   telefono
     VARCHAR(255)
@@ -141,8 +150,21 @@ CREATE TABLE usuarios (
       OR telefono LIKE '+%'
     ),
   correo VARCHAR(255) NOT NULL UNIQUE CHECK (correo LIKE '%@%'),
-  id_rol INTEGER NOT NULL,
+  usuario VARCHAR(255) NOT NULL UNIQUE,
+  clave VARCHAR(255) NOT NULL,
 
   FOREIGN KEY (id_rol) REFERENCES roles (id),
-  UNIQUE (primerNombre, segundoNombre, primerApellido, segundoApellido)
+  UNIQUE (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido)
 );
+
+INSERT INTO roles VALUES
+(1, 'Administrador', 'Administradora'),
+(2, 'Secretario', 'Secretaria');
+
+INSERT INTO tipos_vivienda VALUES
+(1, 'Casa'),
+(2, 'Apartamento'),
+(3, 'Quinta'),
+(4, 'Rancho'),
+(5, 'Finca'),
+(6, 'Parcela');
