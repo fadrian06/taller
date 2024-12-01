@@ -1,5 +1,34 @@
 {
-    "require": {
-        "jenssegers/date": "^4.0"
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*",
+    "ext-pdo_mysql": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "jenssegers/date": "^4.0",
+    "leafs/leaf": "^3.8",
+    "leafs/session": "^2.3",
+    "symfony/dotenv": "^7.2",
+    "leafs/db": "^2.2",
+    "illuminate/view": "^9.52",
+    "leafs/blade": "^2.0",
+    "ramsey/uuid": "^4.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "SMD\\": "."
     }
+  },
+  "scripts": {
+    "pre-install-cmd": [
+      "composer check-platform-reqs"
+    ],
+    "post-autoload-dump": [
+      "cp -n .env.dist .env"
+    ]
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^7.2"
+  }
 }
