@@ -1,5 +1,15 @@
 {
     "require": {
         "jenssegers/date": "^4.0"
+    },
+    "archive": {
+        "name": "SMD",
+        "exclude": [
+            ".env",
+            ".gitignore",
+            "composer.*",
+            "correcciones.todo",
+            "*.sublime-*"
+        ]
     }
 }
