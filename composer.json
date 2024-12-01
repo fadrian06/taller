@@ -13,7 +13,9 @@
     "leafs/db": "^2.2",
     "illuminate/view": "^9.52",
     "leafs/blade": "^2.0",
-    "ramsey/uuid": "^4.7"
+    "ramsey/uuid": "^4.7",
+    "symfony/polyfill-php84": "^1.31",
+    "symfony/polyfill-php83": "^1.31"
   },
   "autoload": {
     "psr-4": {
