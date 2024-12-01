@@ -9,7 +9,8 @@
             ".gitignore",
             "composer.*",
             "correcciones.todo",
-            "*.sublime-*"
+            "*.sublime-*",
+            "database/venezuela.json"
         ]
     }
 }
