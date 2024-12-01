@@ -1,43 +1,42 @@
 <?php
 
 /** Clase para gestionar la conexión a la base de datos */
-class Database
+final class Database
 {
-    // Propiedades privadas para los parámetros de conexión
+  // Propiedades privadas para los parámetros de conexión
+  /** Servidor */
+  private string $host = 'localhost';
 
-    /** @var string Servidor */
-    private $host = "localhost";
+  /** Nombre de la base de datos */
+  private string $db_name = 'servimotorsdavila';
 
-    /** @var string Nombre de la base de datos */
-    private $db_name = "servimotorsdavila";
+  /** Usuario de la base de datos */
+  private string $username = 'root';
 
-    /** @var string Usuario de la base de datos */
-    private $username = "root";
+  /** Contraseña del usuario */
+  private string $password = '';
 
-    /** @var string Contraseña del usuario */
-    private $password = "";
+  /** Variable para almacenar la conexión */
+  private ?PDO $conn = null;
 
-    /** @var ?PDO Variable para almacenar la conexión */
-    private $conn = null;
+  /** @deprecated Método para obtener la conexión */
+  public function getConnection(): PDO
+  {
+    try {
+      /** Crear una instancia de PDO para conectarse a la base de datos */
+      $this->conn = new PDO(
+        "mysql:host=$this->host;dbname=$this->db_name",
+        $this->username,
+        $this->password
+      );
 
-    /** Método para obtener la conexión */
-    public function getConnection()
-    {
-        try {
-            /** Crear una instancia de PDO para conectarse a la base de datos */
-            $this->conn = new PDO(
-                "mysql:host=$this->host;dbname=$this->db_name",
-                $this->username,
-                $this->password
-            );
-
-            // Configurar el modo de error para que use excepciones
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            // Mostrar un mensaje en caso de error
-            echo "Connection error: {$e->getMessage()}";
-        }
-
-        return $this->conn; // Devolver la conexión
+      // Configurar el modo de error para que use excepciones
+      $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+      // Mostrar un mensaje en caso de error
+      echo "Connection error: {$e->getMessage()}";
     }
+
+    return $this->conn; // Devolver la conexión
+  }
 }

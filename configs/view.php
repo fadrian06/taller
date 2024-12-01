@@ -10,7 +10,7 @@ $app->bind(ApplicationContract::class, App::class);
 $app->alias('view', ViewFactory::class);
 
 app()->register('blade', static fn(): Blade => new Blade(
-  APP_DIR . '/resources/views',
-  APP_DIR . '/storage/cache',
+  dirname(__DIR__) . '/resources/views',
+  dirname(__DIR__) . '/storage/cache',
   $app
 ));
