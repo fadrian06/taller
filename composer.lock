@@ -1084,16 +1084,16 @@
         },
         {
             "name": "leafs/exception",
-            "version": "v3.4",
+            "version": "v3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/exceptions.git",
-                "reference": "74ba10351944d3503f268e111be58308d16d51eb"
+                "reference": "e5bf7d5be486b2985c00c4c53fe87a814eb366a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/exceptions/zipball/74ba10351944d3503f268e111be58308d16d51eb",
-                "reference": "74ba10351944d3503f268e111be58308d16d51eb",
+                "url": "https://api.github.com/repos/leafsphp/exceptions/zipball/e5bf7d5be486b2985c00c4c53fe87a814eb366a4",
+                "reference": "e5bf7d5be486b2985c00c4c53fe87a814eb366a4",
                 "shasum": ""
             },
             "require": {
@@ -1143,7 +1143,7 @@
                 "whoops"
             ],
             "support": {
-                "source": "https://github.com/leafsphp/exceptions/tree/v3.4"
+                "source": "https://github.com/leafsphp/exceptions/tree/v3.5"
             },
             "funding": [
                 {
@@ -1151,7 +1151,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-23T12:20:17+00:00"
+            "time": "2024-12-01T15:19:54+00:00"
         },
         {
             "name": "leafs/form",
