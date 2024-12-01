@@ -1,69 +1,22 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 require_once '../../config/Database.php';
+require_once __DIR__ . '/ClientValidator.php';
 
-class ClientValidator {
-    private $errors = [];
-
-    public function validateForm($data) {
-        // Verificar campos requeridos
-        $requiredFields = ['firstName', 'firstSurname', 'cedula', 'personalPhone', 
-                          'state', 'municipality', 'parish', 'avenue', 'street', 'houseOrApartment'];
-        
-        foreach ($requiredFields as $field) {
-            if (!isset($data[$field]) || trim($data[$field]) === '') {
-                $this->errors[] = "El campo " . $field . " es requerido";
-                return false;
-            }
-        }
-
-        // Validaciones de formato
-        $nameRegex = "/^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{1,29}$/u";
-        if (!preg_match($nameRegex, trim($data['firstName']))) {
-            $this->errors[] = "Primer nombre inválido";
-        }
-        if (!empty($data['secondName']) && !preg_match($nameRegex, trim($data['secondName']))) {
-            $this->errors[] = "Segundo nombre inválido";
-        }
-        if (!preg_match($nameRegex, trim($data['firstSurname']))) {
-            $this->errors[] = "Primer apellido inválido";
-        }
-        if (!empty($data['secondSurname']) && !preg_match($nameRegex, trim($data['secondSurname']))) {
-            $this->errors[] = "Segundo apellido inválido";
-        }
-
-        // Validar teléfonos
-        if (!preg_match("/^\d{11}$/", trim($data['personalPhone']))) {
-            $this->errors[] = "Teléfono personal inválido";
-        }
-        if (!empty($data['landlinePhone']) && !preg_match("/^\d{11}$/", trim($data['landlinePhone']))) {
-            $this->errors[] = "Teléfono fijo inválido";
-        }
-        if (!empty($data['optionalPhone']) && !preg_match("/^\d{11}$/", trim($data['optionalPhone']))) {
-            $this->errors[] = "Teléfono opcional inválido";
-        }
-
-        return empty($this->errors);
-    }
-
-    public function getErrors() {
-        return $this->errors;
-    }
-}
-
-class ClientUpdate {
+class ClientUpdate
+{
     private $conn;
     private $validator;
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->conn = $database->getConnection();
         $this->validator = new ClientValidator();
     }
 
-    public function update($data) {
+    public function update($data)
+    {
         if (!$this->validator->validateForm($data)) {
             return [
                 'success' => false,
@@ -75,7 +28,7 @@ class ClientUpdate {
             $this->conn->beginTransaction();
 
             $cedula = str_replace(['V-', 'E-'], '', $data['cedula']);
-            
+
             // Verificar si el cliente existe
             $stmt = $this->conn->prepare("SELECT cedula FROM Clientes WHERE cedula = ?");
             $stmt->execute([$cedula]);
@@ -132,33 +85,53 @@ class ClientUpdate {
 
             // Actualizar cada nivel de la dirección
             $this->updateLocation(
-                'Estados', 'estadoId', 'nombreEstado', 
-                $locationIds['estadoId'], $data['state']
+                'Estados',
+                'estadoId',
+                'nombreEstado',
+                $locationIds['estadoId'],
+                $data['state']
             );
 
             $this->updateLocation(
-                'Municipios', 'municipioId', 'nombreMunicipio', 
-                $locationIds['municipioId'], $data['municipality']
+                'Municipios',
+                'municipioId',
+                'nombreMunicipio',
+                $locationIds['municipioId'],
+                $data['municipality']
             );
 
             $this->updateLocation(
-                'Parroquias', 'parroquiaId', 'nombreParroquia', 
-                $locationIds['parroquiaId'], $data['parish']
+                'Parroquias',
+                'parroquiaId',
+                'nombreParroquia',
+                $locationIds['parroquiaId'],
+                $data['parish']
             );
 
             $this->updateLocation(
-                'Avenidas', 'avenidaId', 'nombreAvenida', 
-                $locationIds['avenidaId'], $data['avenue']
+                'Avenidas',
+                'avenidaId',
+                'nombreAvenida',
+                $locationIds['avenidaId'],
+                $data['avenue']
             );
 
             $this->updateLocation(
-                'Calles', 'calleId', 'nombreCalle', 
-                $locationIds['calleId'], $data['street']
+                'Calles',
+                'calleId',
+                'nombreCalle',
+                $locationIds['calleId'],
+                $data['street']
             );
 
+            // TODO: add housingType to clients table
+
             $this->updateLocation(
-                'CasasApartamentos', 'casaApartamentoId', 'detalleCasaApartamento', 
-                $locationIds['casaApartamentoId'], $data['houseOrApartment']
+                'CasasApartamentos',
+                'casaApartamentoId',
+                'detalleCasaApartamento',
+                $locationIds['casaApartamentoId'],
+                $data['housingNumber']
             );
 
             $this->conn->commit();
@@ -166,7 +139,6 @@ class ClientUpdate {
                 'success' => true,
                 'mensaje' => 'Cliente actualizado exitosamente'
             ];
-
         } catch (Exception $e) {
             $this->conn->rollBack();
             return [
@@ -176,7 +148,8 @@ class ClientUpdate {
         }
     }
 
-    private function updateLocation($table, $idColumn, $nameColumn, $id, $newValue) {
+    private function updateLocation($table, $idColumn, $nameColumn, $id, $newValue)
+    {
         $stmt = $this->conn->prepare(
             "UPDATE $table 
              SET $nameColumn = ?

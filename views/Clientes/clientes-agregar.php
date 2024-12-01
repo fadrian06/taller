@@ -344,8 +344,9 @@ $stmt = $conn->query($sql);
                   id="editPersonalPhone"
                   class="form-control"
                   required
-                  pattern="\d{11}" />
-                <div class="invalid-feedback">Debe tener 11 dígitos.</div>
+                  pattern="(\+(\d{1,3}|\d{1}-\d{1,3}){1} \d{1,3}-\d{7,}|\d{11}){1}" />
+                <div class="invalid-feedback">Debe ser local (ej. 04241234567) o internacional
+                  (ej. +58 416-1231234).</div>
               </div>
 
               <div class="col-md-4">
@@ -356,8 +357,9 @@ $stmt = $conn->query($sql);
                   name="landlinePhone"
                   id="editLandlinePhone"
                   class="form-control"
-                  pattern="\d{11}" />
-                <div class="invalid-feedback">Debe tener 11 dígitos.</div>
+                  pattern="(\+(\d{1,3}|\d{1}-\d{1,3}){1} \d{1,3}-\d{7,}|\d{11}){1}" />
+                <div class="invalid-feedback">Debe ser local (ej. 04241234567) o internacional
+                  (ej. +58 416-1231234).</div>
               </div>
 
               <div class="col-md-4">
@@ -368,8 +370,9 @@ $stmt = $conn->query($sql);
                   name="optionalPhone"
                   id="editOptionalPhone"
                   class="form-control"
-                  pattern="\d{11}" />
-                <div class="invalid-feedback">Debe tener 11 dígitos.</div>
+                  pattern="(\+(\d{1,3}|\d{1}-\d{1,3}){1} \d{1,3}-\d{7,}|\d{11}){1}" />
+                <div class="invalid-feedback">Debe ser local (ej. 04241234567) o internacional
+                  (ej. +58 416-1231234).</div>
               </div>
 
               <!-- Dirección -->
@@ -377,14 +380,12 @@ $stmt = $conn->query($sql);
 
               <div class="col-md-6">
                 <label for="editState" class="form-label">Estado</label>
-                <input
-                  name="state"
-                  id="editState"
-                  class="form-control"
-                  required
-                  pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*" />
+                <select name="state" id="editState" class="form-select" required>
+                  <option value=""></option>
+                </select>
                 <div class="invalid-feedback">
-                  Ingrese un estado válido (primera letra mayúscula).
+                  Por favor, ingrese un estado válido (solo letras y espacios,
+                  2 a 50 caracteres, y la primera letra debe ser mayúscula).
                 </div>
               </div>
 
@@ -392,71 +393,97 @@ $stmt = $conn->query($sql);
                 <label for="editMunicipality" class="form-label">
                   Municipio
                 </label>
-                <input
+                <select
                   name="municipality"
                   id="editMunicipality"
-                  class="form-control"
-                  required
-                  pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*" />
+                  class="form-select"
+                  required>
+                  <option value=""></option>
+                </select>
                 <div class="invalid-feedback">
-                  Ingrese un municipio válido (primera letra mayúscula).
+                  Por favor, ingrese un municipio válido (solo letras y
+                  espacios, 2 a 50 caracteres, y la primera letra debe ser
+                  mayúscula).
                 </div>
               </div>
 
               <div class="col-md-6">
                 <label for="editParish" class="form-label">Parroquia</label>
-                <input
-                  name="parish"
-                  id="editParish"
-                  class="form-control"
-                  required
-                  pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*">
+                <select name="parish" id="editParish" class="form-select" required>
+                  <option value=""></option>
+                </select>
                 <div class="invalid-feedback">
-                  Ingrese una parroquia válida (primera letra mayúscula).
+                  Por favor, ingrese una parroquia válida (solo letras y espacios, 2 a 50
+                  caracteres, y la primera letra debe ser mayúscula).
                 </div>
               </div>
 
               <div class="col-md-6">
                 <label for="editAvenue" class="form-label">Avenida</label>
                 <input
+                  list="avenue-list"
                   name="avenue"
                   id="editAvenue"
                   class="form-control"
                   required
                   pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\-]{1,49}">
                 <div class="invalid-feedback">
-                  Ingrese una avenida válida (letras, números, guiones).
+                  Por favor, ingrese una avenida válida (letras, números,
+                  guiones y espacios, 2 a 50 caracteres, y la primera letra
+                  debe ser mayúscula).
                 </div>
               </div>
 
               <div class="col-md-6">
                 <label for="editStreet" class="form-label">Calle</label>
                 <input
+                  list="street-list"
                   name="street"
                   id="editStreet"
                   class="form-control"
                   required
                   pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s\-]{1,49}" />
                 <div class="invalid-feedback">
-                  Ingrese una calle válida (letras, números, guiones).
+                  Por favor, ingrese una calle válida (letras, números, guiones
+                  y espacios, 2 a 50 caracteres, y la primera letra debe ser
+                  mayúscula).
                 </div>
               </div>
-
               <div class="col-md-6">
-                <label for="editHouseOrApartment" class="form-label">
-                  Casa o Apartamento
+                <label for="housingType" class="form-label">
+                  Tipo de vivienda
+                </label>
+                <select
+                  name="housingType"
+                  id="editHousingType"
+                  required
+                  class="form-select">
+                  <option value=""></option>
+                  <option>Casa</option>
+                  <option>Apartamento</option>
+                  <option>Quinta</option>
+                  <option>Rancho</option>
+                  <option>Finca</option>
+                  <option>Parcela</option>
+                </select>
+              </div>
+              <!-- Número de vivienda -->
+              <div class="col-md-6">
+                <label for="housingNumber" class="form-label">
+                  Número de vivienda
                 </label>
                 <input
-                  name="houseOrApartment"
-                  id="editHouseOrApartment"
+                  name="housingNumber"
+                  id="editHousingNumber"
                   class="form-control"
                   required
                   pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s#\-]{1,49}">
                 <div class="invalid-feedback">
-                  Ingrese una dirección válida (letras, números, guiones, #).
+                  Por favor, ingrese un número de vivienda válido
+                  (letras, números, guiones, # y espacios, 2 a 50 caracteres
+                  y la primera letra debe ser mayúscula).
                 </div>
               </div>
-
               <!-- Botón para guardar cambios -->
               <div class="col-12">
                 <button class="btn btn-success w-100">Guardar Cambios</button>
@@ -491,7 +518,7 @@ $stmt = $conn->query($sql);
               document.getElementById('editParish').value = data.cliente.parroquia
               document.getElementById('editAvenue').value = data.cliente.avenida
               document.getElementById('editStreet').value = data.cliente.calle
-              document.getElementById('editHouseOrApartment').value = data.cliente.casaApartamento
+              document.getElementById('editHousingNumber').value = data.cliente.casaApartamento
             } else {
               Swal.fire({
                 icon: 'error',
@@ -540,6 +567,24 @@ $stmt = $conn->query($sql);
           try {
             const formData = new FormData(form)
 
+            let response = await fetch(`../../api.php?id_estado=${form.state.value}`)
+            const estado = await response.json()
+            response = await fetch(`../../api.php?id_municipio=${form.municipality.value}`)
+            const municipio = await response.json()
+            response = await fetch(`../../api.php?id_parroquia=${form.parish.value}`)
+            const parroquia = await response.json()
+
+            function soloInicialMayuscula(string = '') {
+              const letters = string.toLowerCase().split('')
+              letters[0] = letters[0].toUpperCase()
+
+              return letters.join('')
+            }
+
+            formData.set('state', soloInicialMayuscula(estado.nombre))
+            formData.set('municipality', soloInicialMayuscula(municipio.nombre))
+            formData.set('parish', soloInicialMayuscula(parroquia.nombre))
+
             Swal.fire({
               title: 'Procesando',
               text: 'Por favor espere...',
@@ -549,7 +594,7 @@ $stmt = $conn->query($sql);
               }
             })
 
-            const response = await fetch('../../CRUD/Clientes/editar_cliente.php', {
+            response = await fetch('../../CRUD/Clientes/editar_cliente.php', {
               method: 'POST',
               body: formData
             })
@@ -579,6 +624,121 @@ $stmt = $conn->query($sql);
               text: 'Ocurrió un error al procesar la solicitud',
             })
           }
+        })
+      })
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const $formEditarCliente = document.querySelector('#editClientForm')
+        const $selectEstado = $formEditarCliente.state
+        const $selectMunicipio = $formEditarCliente.municipality
+        const $selectParroquia = $formEditarCliente.parish
+        const $listAvenidas = $formEditarCliente.querySelector('#avenue-list')
+        const $inputAvenida = $formEditarCliente.avenue
+        const $listCalles = $formEditarCliente.querySelector('#street-list')
+        const $inputCalle = $formEditarCliente.street
+
+        fetch('../../api.php?estados')
+          .then(response => response.json())
+          .then(estados => {
+            $selectEstado.innerHTML = '<option value=""></option>'
+
+            for (const inicial in estados) {
+              $selectEstado.innerHTML += `
+                <optgroup label="${inicial}">
+                  ${estados[inicial].map(estado => `
+                    <option value="${estado.id}">${estado.nombre}</option>
+                  `)}
+                </optgroup>
+              `
+            }
+          })
+
+        $selectEstado.addEventListener('change', () => {
+          if (!$selectEstado.value) {
+            return
+          }
+
+          fetch(`../../api.php?municipios&id_estado=${$selectEstado.value}`)
+            .then(response => response.json())
+            .then(municipios => {
+              $selectMunicipio.innerHTML = '<option value=""></option>'
+
+              for (const inicial in municipios) {
+                $selectMunicipio.innerHTML += `
+                  <optgroup label="${inicial}">
+                    ${municipios[inicial].map(municipio => `
+                      <option value="${municipio.id}">${municipio.nombre}</option>
+                    `)}
+                  </optgroup>
+                `
+              }
+            })
+        })
+
+        $selectMunicipio.addEventListener('change', () => {
+          if (!$selectMunicipio.value) {
+            return
+          }
+
+          fetch(`../../api.php?parroquias&id_municipio=${$selectMunicipio.value}`)
+            .then(response => response.json())
+            .then(parroquias => {
+              $selectParroquia.innerHTML = '<option value=""></option>'
+
+              for (const inicial in parroquias) {
+                $selectParroquia.innerHTML += `
+                  <optgroup label="${inicial}">
+                    ${parroquias[inicial].map(parroquia => `
+                      <option value="${parroquia.id}">${parroquia.nombre}</option>
+                    `)}
+                  </optgroup>
+                `
+              }
+            })
+        })
+
+        $selectParroquia.addEventListener('change', () => {
+          if (!$selectParroquia.value) {
+            return
+          }
+
+          fetch(`../../api.php?avenidas&id_parroquia=${$selectParroquia.value}`)
+            .then(response => response.json())
+            .then(avenidas => {
+              $listAvenidas.innerHTML = '<option value="Sin nombre" />'
+
+              for (const avenida of avenidas) {
+                $listAvenidas.innerHTML += `
+                  <option value="${avenida.nombre} - ${avenida.id}" />
+                `
+              }
+            })
+        })
+
+        $inputAvenida.addEventListener('change', () => {
+          if (!$inputAvenida.value) {
+            return
+          }
+
+          const [, idAvenida = ''] = $inputAvenida.value.split(/\s?-\s?/)
+
+          fetch(`../../api.php?calles&id_avenida=${idAvenida}&id_parroquia=${$selectParroquia.value}`)
+            .then(response => response.json())
+            .then(calles => {
+              $listCalles.innerHTML = '<option value="Sin nombre" />'
+
+              for (const calle of calles) {
+                let nombre = calle.nombre.toLowerCase().split('')
+                nombre[0] = nombre[0].toUpperCase()
+                nombre = nombre.join('')
+
+                $listCalles.innerHTML += `
+                  <option value="${nombre} - ${calle.id}" />
+                `
+              }
+            })
         })
       })
     </script>
