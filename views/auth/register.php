@@ -36,10 +36,10 @@ require_once "../../config/ManejoUsuario.php"
   <link href="../../assets/css/Mystyle.css" rel="stylesheet">
 
   <!-- SweetAlert -->
-  <link rel="stylesheet" href="../../assets/css/sweetalert2.min.css">
-  <script src="../../assets/js/sweetalert2.min.js"></script>
-<!-- Vendor JS Files -->
-<script src="../../assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <link rel="stylesheet" href="../../assets/vendor/sweetalert2/sweetalert2.min.css">
+  <script src="../../assets/vendor/sweetalert2/sweetalert2.min.js"></script>
+  <!-- Vendor JS Files -->
+  <script src="../../assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../../assets/vendor/chart.js/chart.umd.js"></script>
   <script src="../../assets/vendor/echarts/echarts.min.js"></script>
@@ -189,7 +189,7 @@ require_once "../../config/ManejoUsuario.php"
 
   <!-- SweetAlert y Validación -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('userForm');
       const passwordField = document.getElementById('password');
       const confirmPasswordField = document.getElementById('confirmPassword');
@@ -239,7 +239,7 @@ require_once "../../config/ManejoUsuario.php"
       confirmPasswordField.addEventListener('input', validatePasswords);
 
       // Validación al enviar el formulario
-      form.addEventListener('submit', async function (e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         // Validar coincidencia de contraseñas

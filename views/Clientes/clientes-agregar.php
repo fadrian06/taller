@@ -76,8 +76,8 @@ $stmt = $conn->query($sql);
   <link rel="stylesheet" href="../../assets/css/Mystyle.css" />
 
   <!-- SweetAlert -->
-  <link rel="stylesheet" href="../../assets/css/sweetalert2.min.css" />
-  <script src="../../assets/js/sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="../../assets/vendor/sweetalert2/sweetalert2.min.css" />
+  <script src="../../assets/vendor/sweetalert2/sweetalert2.min.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="../../assets/vendor/apexcharts/apexcharts.min.js"></script>
