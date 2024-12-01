@@ -1,5 +1,9 @@
 <?php
 
+if (key_exists('_', $_GET)) {
+  exit(json_encode('[]'));
+}
+
 require_once '../../config/ManejoUsuario.php';
 
 // Incluir el archivo con la clase Database
@@ -169,13 +173,12 @@ $stmt = $conn->query($sql);
     </div>
 
     <script>
-      $(document).ready(() => {
-        $('#clientesTable').DataTable({
-          responsive: true,
-          language: {
-            url: '../../assets/vendor/simple-datatables/es-ES.json'
-          }
-        })
+      $('#clientesTable').DataTable({
+        responsive: true,
+        language: {
+          url: '../../assets/vendor/simple-datatables/es-ES.json'
+        },
+        ajax: '../../api.php?clientes'
       })
 
       // Función para editar cliente
@@ -215,7 +218,7 @@ $stmt = $conn->query($sql);
                     // Recargar la tabla sin recargar la página
                     $('#clientesTable').DataTable().ajax.reload()
                     // Si prefieres recargar la página completa, usa:
-                    location.reload()
+                    // location.reload()
                   })
                 } else {
                   Swal.fire({
@@ -607,6 +610,7 @@ $stmt = $conn->query($sql);
                 title: 'Cliente actualizado',
                 text: 'Los datos del cliente se actualizaron correctamente.',
               }).then(() => {
+                $('#clientesTable').DataTable().ajax.reload()
                 form.reset()
                 modal.hide()
               })
@@ -1054,6 +1058,7 @@ $stmt = $conn->query($sql);
                 title: 'Cliente registrado',
                 text: 'El cliente ha sido registrado exitosamente.',
               }).then(() => {
+                $('#clientesTable').DataTable().ajax.reload()
                 form.reset()
               })
             } else {
