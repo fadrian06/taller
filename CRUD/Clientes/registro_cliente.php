@@ -32,21 +32,23 @@ class ClientValidator
         }
 
         // Validar teléfonos
-        $phoneRegex = "/^\d{11}$/";
+        $phoneRegex = '/^(\+(\d{1,3}|\d{1}-\d{1,3}){1} \d{1,3}-\d{7,}|\d{11}){1}$/';
+
         if (!preg_match($phoneRegex, $data['personalPhone'])) {
-            $this->errors[] = "El teléfono personal debe contener 11 dígitos";
+            $this->errors[] = "El teléfono personal debe ser local (ej. 04241234567) o internacional (ej. +58 416-1231234)";
         }
 
         if (!empty($data['landlinePhone']) && !preg_match($phoneRegex, $data['landlinePhone'])) {
-            $this->errors[] = "El teléfono fijo debe contener 11 dígitos";
+            $this->errors[] = "El teléfono fijo debe ser local (ej. 04241234567) o internacional (ej. +58 416-1231234)";
         }
 
         if (!empty($data['optionalPhone']) && !preg_match($phoneRegex, $data['optionalPhone'])) {
-            $this->errors[] = "El teléfono opcional debe contener 11 dígitos";
+            $this->errors[] = "El teléfono opcional debe ser local (ej. 04241234567) o internacional (ej. +58 416-1231234)";
         }
 
         // Validar dirección
-        $locationRegex = "/^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$/";
+        $locationRegex = '/^[A-ZÁÉÍÓÚ][a-záéíóúñ\s]*$/';
+
         if (!preg_match($locationRegex, $data['state'])) {
             $this->errors[] = "Estado inválido";
         }
@@ -205,7 +207,7 @@ class ClientRegistration
 
             return $id;
         } catch (PDOException $e) {
-            throw new Exception("Error procesando $table: " . $e->getMessage());
+            exit("Error procesando $table: " . $e->getMessage());
         }
     }
 }

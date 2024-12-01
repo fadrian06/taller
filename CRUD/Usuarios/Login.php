@@ -17,18 +17,19 @@ class LoginController
     {
         try {
             // Consulta para obtener los datos del usuario, incluyendo información personal y de contacto
-            $query = "SELECT u.cedula, u.nombreUsuario, u.contrasena, r.nombreRol,
-                             d.primerNombre, d.segundoNombre, d.primerApellido, d.segundoApellido,
-                             c.telefono, c.correo
-                      FROM Usuarios u
-                      INNER JOIN RolUsuario r ON u.idRol = r.idRol
-                      INNER JOIN DatosUsuario d ON u.cedula = d.cedula
-                      INNER JOIN ContactosUsuario c ON u.cedula = c.cedula
-                      WHERE u.nombreUsuario = :nombreUsuario";
+            $query = "
+                SELECT u.cedula, u.nombreUsuario, u.contrasena, r.nombreRol,
+                d.primerNombre, d.segundoNombre, d.primerApellido, d.segundoApellido,
+                c.telefono, c.correo
+                FROM Usuarios u
+                JOIN RolUsuario r ON u.idRol = r.idRol
+                JOIN DatosUsuario d ON u.cedula = d.cedula
+                JOIN ContactosUsuario c ON u.cedula = c.cedula
+                WHERE u.nombreUsuario = ?
+            ";
 
             $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':nombreUsuario', $nombreUsuario);
-            $stmt->execute();
+            $stmt->execute([$nombreUsuario]);
 
             if ($stmt->rowCount() > 0) {
                 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -116,5 +117,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
 }
-
-?>

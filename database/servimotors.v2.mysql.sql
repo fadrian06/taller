@@ -47,9 +47,11 @@ CREATE TABLE avenidas (
 CREATE TABLE calles (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   id_avenida INTEGER NOT NULL,
+  id_parroquia INTEGER NOT NULL,
   nombre VARCHAR(255) NOT NULL,
 
   FOREIGN KEY (id_avenida) REFERENCES avenidas (id),
+  FOREIGN KEY (id_parroquia) REFERENCES parroquias (id),
   UNIQUE (id_avenida, nombre)
 );
 

@@ -1,7 +1,8 @@
- ☐ Modificar en pantalla de validación de C.I. (Decir que debe contener números y lo mínimo que puede tener)
- ☐ Corregir el campo Estado, Municipio, Avenida
- ☐ Corregir campo Teléfono que acepte si es +58 o el número de otro país.
- ☐ Corregir los mensajes en pantalla de dirección personal
- ☐ Casa o apartamento XX o es el número o hacer un `<select>` de tipo de vivienda
- ☐ Modificar el reporte pantalla si da error al registrar.
- ☐ Los mensajes de validación deben de estar mejor formulados.
+Registrar cliente:
+  ☐ Modificar en pantalla de validación de C.I. (Decir que debe contener números y lo mínimo que puede tener)
+  ✔ Corregir el campo Estado, Municipio, Avenida @done (30/11/2024 19:38:41)
+  ✔ Corregir campo Teléfono que acepte si es +58 o el número de otro país. @done (30/11/2024 20:05:49)
+  ☐ Corregir los mensajes en pantalla de dirección personal
+  ✔ Casa o apartamento XX o es el número o hacer un `<select>` de tipo de vivienda @done (30/11/2024 19:39:00)
+  ☐ Modificar el reporte pantalla si da error al registrar.
+  ☐ Los mensajes de validación deben de estar mejor formulados.
