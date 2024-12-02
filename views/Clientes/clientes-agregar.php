@@ -480,11 +480,9 @@ $stmt = $conn->query($sql);
                   id="editHousingNumber"
                   class="form-control"
                   required
-                  pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s#\-]{1,49}">
+                  pattern="(?:\d+|Sin número)">
                 <div class="invalid-feedback">
-                  Por favor, ingrese un número de vivienda válido
-                  (letras, números, guiones, # y espacios, 2 a 50 caracteres
-                  y la primera letra debe ser mayúscula).
+                  Número de vivienda inválido (Debe contener números o 'Sin número')
                 </div>
               </div>
               <!-- Botón para guardar cambios -->
@@ -964,11 +962,9 @@ $stmt = $conn->query($sql);
                   id="housingNumber"
                   class="form-control"
                   required
-                  pattern="[A-ZÁÉÍÓÚ][a-záéíóúñ0-9\s#\-]{1,49}">
+                  pattern="(?:\d+|Sin número)">
                 <div class="invalid-feedback">
-                  Por favor, ingrese un número de vivienda válido
-                  (letras, números, guiones, # y espacios, 2 a 50 caracteres
-                  y la primera letra debe ser mayúscula).
+                  Número de vivienda inválido (Debe contener números o 'Sin número')
                 </div>
               </div>
 
